@@ -1,0 +1,11 @@
+{
+  "name": "com.chonker.core",
+  "version": "1.0.0",
+  "displayName": "Chonker Core",
+  "description": "Core reusable methods and utilities for Chonker projects.",
+  "unity": "2021.3",
+  "author": {
+    "name": "ChonkerDev",
+    "email": ""
+  }
+}
