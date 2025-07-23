@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Chonker.Scripts.Core.StateMachine
+namespace Chonker.Runtime.Core.StateMachine
 {
     public abstract class StateMachine<TStateId> : MonoBehaviour where TStateId : Enum
     {

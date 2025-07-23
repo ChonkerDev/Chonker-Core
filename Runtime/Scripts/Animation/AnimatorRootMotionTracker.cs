@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Chonker.Core.Animation
+namespace Chonker.Runtime.Core.Animation
 {
     public class AnimatorRootMotionTracker : MonoBehaviour
     {

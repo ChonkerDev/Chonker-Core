@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Chonker.Scripts.Core.StateMachine
+namespace Chonker.Runtime.Core.StateMachine
 {
     public abstract class StateMachineManager<TStateId, TState> : MonoBehaviour
         where TStateId : Enum
