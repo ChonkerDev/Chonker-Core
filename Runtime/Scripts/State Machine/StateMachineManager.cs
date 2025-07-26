@@ -40,6 +40,7 @@ namespace Chonker.Runtime.Core.StateMachine
             states = new();
             foreach (TState stateMachine in GetComponentsInChildren<TState>()) {
                 stateMachine.Initialize();
+                stateMachine.InitializeFields();
                 states.Add(stateMachine.StateId, stateMachine);
             }
         }
