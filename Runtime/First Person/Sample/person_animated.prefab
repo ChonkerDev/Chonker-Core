@@ -551,8 +551,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4165a2c23bedaf14a98d8e50fe7b63e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 4812723582404767279}
   ModelCameraAnchor: {fileID: 725876308114258643}
   ModelHideAnchor: {fileID: 6075744461708049686}
+  torsoAnchorOffset: {x: 0, y: -0.4, z: -0.1}
 --- !u!1 &2393431124092384390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1018,7 +1020,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -5495902117074765545, guid: 7b72f84cad3fe144cb0a6b9e43f52882, type: 3}
   m_Bones:

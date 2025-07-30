@@ -6,6 +6,7 @@ namespace Chonker.Core.FirstPerson
     public class CameraControl : MonoBehaviour
     {
         [SerializeField] private PlayerLookRotationTracker _rotationTracker;
+        public CameraShakeAnimator CameraShakeAnimator;
 
         private void Update() {
             transform.eulerAngles = _rotationTracker.transform.eulerAngles;

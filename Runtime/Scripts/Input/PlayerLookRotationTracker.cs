@@ -4,8 +4,8 @@ namespace Chonker.Core.Scripts.Input
 {
     public class PlayerLookRotationTracker : MonoBehaviour
     {
-        [SerializeField, Range(0, 89)] private float UpperLookLimit = 60f;
-        [SerializeField, Range(0, 89)] private float LowerLookLimit = 30f;
+        [SerializeField, Range(0, 89)] private int UpperLookLimit = 80;
+        [SerializeField, Range(0, 89)] private int LowerLookLimit = 80;
         [SerializeField] private float smoothTime = 0.05f; // smaller => faster
         [SerializeField] private PlayerActionInputManager _playerActionInputManager;
     
