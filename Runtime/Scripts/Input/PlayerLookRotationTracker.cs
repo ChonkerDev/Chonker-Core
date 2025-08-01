@@ -2,12 +2,14 @@ using UnityEngine;
 
 namespace Chonker.Core.Scripts.Input
 {
+    /*
+     * for tracking player look rotation with a transform for visualization
+     */
     public class PlayerLookRotationTracker : MonoBehaviour
     {
         [SerializeField, Range(0, 89)] private int UpperLookLimit = 80;
         [SerializeField, Range(0, 89)] private int LowerLookLimit = 80;
         [SerializeField] private float smoothTime = 0.05f; // smaller => faster
-        [SerializeField] private PlayerActionInputManager _playerActionInputManager;
     
         private float yaw = 0f;
         private float pitch = 0f;
@@ -18,12 +20,11 @@ namespace Chonker.Core.Scripts.Input
         public float Yaw => yaw;
         public float Pitch => pitch;
 
-        private void Update() {
-            UpdateRotation();
-        }
-
-        public void UpdateRotation() {
-            Vector2 lookInput = _playerActionInputManager.ReadLookInputDelta();
+        /*
+         * needs to be called in Update or LateUpdate in another script
+         */
+        public void UpdateRotation(Vector2 lookInputDelta) {
+            Vector2 lookInput = lookInputDelta;
 
             float targetYaw = yaw + lookInput.x;
             float targetPitch = Mathf.Clamp(pitch - lookInput.y, -UpperLookLimit, LowerLookLimit);
