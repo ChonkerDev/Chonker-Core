@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using Chonker.Core.Scripts.Physics;
+using Chonker.Core.Tween;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -29,9 +31,18 @@ namespace Chonker.Core.UI
         [SerializeField, Range(1, 2)] private float _onHoverScale = 1.1f;
         [SerializeField] private Color _onHoverColor = Color.white;
         [SerializeField, Range(.01f, 1)] private float _hoverTransitionTime = 0.2f;
+        [SerializeField] private bool _activationTransition = true;
         public UnityEvent<RadialMenuWedge> OnWedgeHover;
         public UnityEvent<RadialMenuWedge> OnWedgeUnhover;
         public UnityEvent<RadialMenuWedge> OnWedgeSelected;
+
+        private LayerMask UIMask;
+        [SerializeField] private Camera uiCamera;
+        Collider2D[] wedgeProbeResults = new Collider2D[1];
+        
+        private CanvasGroup canvasgroup;
+        public bool isOn { get; private set; }
+        public bool TrackMouse = true;
         
         private RadialMenuWedge _currentWedge;
 
@@ -50,20 +61,52 @@ namespace Chonker.Core.UI
             }
         }
 
-        private LayerMask UIMask;
-        [SerializeField] private Camera uiCamera;
-        Collider2D[] wedgeProbeResults = new Collider2D[1];
-
         private void Awake() {
             wedgeTemplate.gameObject.SetActive(false);
+            canvasgroup = GetComponent<CanvasGroup>();
+        }
+
+        private IEnumerator Start() {
+            yield return new WaitForEndOfFrame();
+            TurnOff();
+        }
+
+        public void TurnOn() {
+            isOn = true;
+            gameObject.SetActive(isOn);
+            if (_activationTransition) {
+                StartCoroutine(TweenCoroutines.RunTaper(.2f, alpha => {
+                        transform.localScale = Vector3.one * alpha;
+                        canvasgroup.alpha = alpha;
+                    },
+                    null, EaseType.SmoothStep));
+            }
+            else {
+                canvasgroup.alpha = 1;
+            }
+
+        }
+
+        public void TurnOff() {
+            isOn = false;
+            canvasgroup.alpha = 0;
+            gameObject.SetActive(isOn);
         }
 
         private void Update() {
-            probeForWedges();
+            if (!TrackMouse) {
+                probeForWedges();
 
-            if (Input.GetMouseButtonDown(0) && CurrentWedge) {
-                OnWedgeSelected.Invoke(CurrentWedge);
+                if (Input.GetMouseButtonDown(0)) {
+                    SelectCurrentWedge();
+                }
             }
+
+        }
+
+        public void SelectCurrentWedge() {
+            OnWedgeSelected?.Invoke(CurrentWedge);
+
         }
 
         private void probeForWedges() {

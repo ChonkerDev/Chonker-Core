@@ -21,6 +21,7 @@ namespace Chonker.Core.Editor.UI.RadialMenu
             _onHoverScale,
             _onHoverColor,
             _hoverTransitionTime,
+            _activationTransition,
             OnWedgeUnhover,
             OnWedgeHover,
             OnWedgeSelected;
@@ -44,6 +45,7 @@ namespace Chonker.Core.Editor.UI.RadialMenu
             _onHoverScale = serializedObject.FindProperty("_onHoverScale");
             _onHoverColor = serializedObject.FindProperty("_onHoverColor");
             _hoverTransitionTime = serializedObject.FindProperty("_hoverTransitionTime");
+            _activationTransition = serializedObject.FindProperty("_activationTransition");
 
             OnWedgeUnhover = serializedObject.FindProperty("OnWedgeUnhover");
             OnWedgeHover = serializedObject.FindProperty("OnWedgeHover");
@@ -90,6 +92,7 @@ namespace Chonker.Core.Editor.UI.RadialMenu
             EditorGUILayout.LabelField("Display Data", EditorStyles.boldLabel);
             Color previousWedgeColor = _wedgeColor.colorValue;
             Color previousBackgroundColor = _backgroundColor.colorValue;
+            EditorGUILayout.PropertyField(_activationTransition);
             EditorGUILayout.PropertyField(_wedgeColor);
             EditorGUILayout.PropertyField(_backgroundColor);
             EditorGUILayout.PropertyField(_updateWedgeOnHover);

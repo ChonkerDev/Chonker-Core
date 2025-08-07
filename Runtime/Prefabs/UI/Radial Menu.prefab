@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2276728842529215739}
   - component: {fileID: 4271765387928940708}
+  - component: {fileID: 4828778292410083887}
   m_Layer: 5
   m_Name: Radial Menu
   m_TagString: Untagged
@@ -78,7 +79,29 @@ MonoBehaviour:
   _onHoverScale: 1.1
   _onHoverColor: {r: 1, g: 0.6556604, b: 0.6556604, a: 1}
   _hoverTransitionTime: 0.2
+  _activationTransition: 1
+  OnWedgeHover:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWedgeUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWedgeSelected:
+    m_PersistentCalls:
+      m_Calls: []
   uiCamera: {fileID: 0}
+--- !u!225 &4828778292410083887
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26429754436028593}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1483143911177818402
 GameObject:
   m_ObjectHideFlags: 0
