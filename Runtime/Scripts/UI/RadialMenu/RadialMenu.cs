@@ -4,6 +4,7 @@ using Chonker.Core.Scripts.Physics;
 using Chonker.Core.Tween;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Chonker.Core.UI
@@ -20,11 +21,13 @@ namespace Chonker.Core.UI
         [SerializeField] private Image _backgroundImage;
         [SerializeField] private CircleCollider2D _CenterBlockerCollider;
         [SerializeField] private RadialMenuWedge wedgeTemplate;
+        [SerializeField] private AudioSource _audioSource;
         [SerializeField] private RadialMenuWedge[] wedges;
         [SerializeField, Range(100, 2000)] private int _radius;
         [SerializeField, Range(0, 1)] private float _iconOffset;
         [SerializeField] private RectTransform rectTransform;
         [SerializeField, Range(0, 180)] private int _wedgeRotationOffset;
+        
         [SerializeField] private Color _wedgeColor = Color.gray;
         [SerializeField] private Color _backgroundColor = Color.white;
         [SerializeField] private bool _updateWedgeOnHover = true;
@@ -32,9 +35,13 @@ namespace Chonker.Core.UI
         [SerializeField] private Color _onHoverColor = Color.white;
         [SerializeField, Range(.01f, 1)] private float _hoverTransitionTime = 0.2f;
         [SerializeField] private bool _activationTransition = true;
+
+        [SerializeField] private AudioClip _onHoverEnterWedgeSoundClip;
+        [SerializeField] private AudioClip _onSubmitWedgeSoundClip;
+        
         public UnityEvent<RadialMenuWedge> OnWedgeHover;
         public UnityEvent<RadialMenuWedge> OnWedgeUnhover;
-        public UnityEvent<RadialMenuWedge> OnWedgeSelected;
+        public UnityEvent<RadialMenuWedge> OnWedgeSubmitted;
 
         private LayerMask UIMask;
         [SerializeField] private Camera uiCamera;
@@ -55,6 +62,7 @@ namespace Chonker.Core.UI
                 }
                 _currentWedge = value;
                 if (_currentWedge) {
+                    _audioSource.PlayOneShot(_onHoverEnterWedgeSoundClip);
                     OnWedgeHover.Invoke(_currentWedge);
                     _currentWedge.OnHover();
                 }
@@ -94,18 +102,19 @@ namespace Chonker.Core.UI
         }
 
         private void Update() {
-            if (!TrackMouse) {
+            if (TrackMouse) {
                 probeForWedges();
 
                 if (Input.GetMouseButtonDown(0)) {
-                    SelectCurrentWedge();
+                    SubmitCurrentWedge();
                 }
             }
 
         }
 
-        public void SelectCurrentWedge() {
-            OnWedgeSelected?.Invoke(CurrentWedge);
+        public void SubmitCurrentWedge() {
+            _audioSource.PlayOneShot(_onSubmitWedgeSoundClip);
+            OnWedgeSubmitted?.Invoke(CurrentWedge);
 
         }
 

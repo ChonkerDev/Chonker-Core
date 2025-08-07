@@ -12,6 +12,7 @@ namespace Chonker.Core.Editor.UI.RadialMenu
             _iconOffset,
             _wedgeRotationOffset,
             _wedgeColor,
+            _audioSource,
             _backgroundColor,
             _CenterBlockerCollider,
             uiCamera,
@@ -22,9 +23,12 @@ namespace Chonker.Core.Editor.UI.RadialMenu
             _onHoverColor,
             _hoverTransitionTime,
             _activationTransition,
+            _onHoverEnterWedgeSoundClip,
+            _onSubmitWedgeSoundClip,
+            TrackMouse,
             OnWedgeUnhover,
             OnWedgeHover,
-            OnWedgeSelected;
+            OnWedgeSubmitted;
 
         private Core.UI.RadialMenu UnderlyingRadialMenu;
         private bool showComponentReferences = false;
@@ -34,6 +38,7 @@ namespace Chonker.Core.Editor.UI.RadialMenu
             _CenterBlockerCollider = serializedObject.FindProperty("_CenterBlockerCollider");
             _backgroundImage = serializedObject.FindProperty("_backgroundImage");
             uiCamera = serializedObject.FindProperty("uiCamera");
+            _audioSource = serializedObject.FindProperty("_audioSource");
 
             _numWedges = serializedObject.FindProperty("_numWedges");
             _radius = serializedObject.FindProperty("_radius");
@@ -46,10 +51,13 @@ namespace Chonker.Core.Editor.UI.RadialMenu
             _onHoverColor = serializedObject.FindProperty("_onHoverColor");
             _hoverTransitionTime = serializedObject.FindProperty("_hoverTransitionTime");
             _activationTransition = serializedObject.FindProperty("_activationTransition");
+            TrackMouse = serializedObject.FindProperty("TrackMouse");
+            _onHoverEnterWedgeSoundClip = serializedObject.FindProperty("_onHoverEnterWedgeSoundClip");
+            _onSubmitWedgeSoundClip = serializedObject.FindProperty("_onSubmitWedgeSoundClip");
 
             OnWedgeUnhover = serializedObject.FindProperty("OnWedgeUnhover");
             OnWedgeHover = serializedObject.FindProperty("OnWedgeHover");
-            OnWedgeSelected = serializedObject.FindProperty("OnWedgeSelected");
+            OnWedgeSubmitted = serializedObject.FindProperty("OnWedgeSubmitted");
             UnderlyingRadialMenu = (Core.UI.RadialMenu)target;
         }
 
@@ -61,10 +69,13 @@ namespace Chonker.Core.Editor.UI.RadialMenu
                 EditorGUILayout.PropertyField(_backgroundImage);
                 EditorGUILayout.PropertyField(_CenterBlockerCollider);
                 EditorGUILayout.PropertyField(wedgeContainer);
+                EditorGUILayout.PropertyField(_audioSource);
             }
 
             DisplayTransformData();
             DisplayWedgeDisplayData();
+            DisplayAudio();
+            DisplayOther();
             DisplayEvents();
             serializedObject.ApplyModifiedProperties();
         }
@@ -109,11 +120,21 @@ namespace Chonker.Core.Editor.UI.RadialMenu
             }
         }
 
+        private void DisplayAudio() {
+            EditorGUILayout.PropertyField(_onHoverEnterWedgeSoundClip);
+            EditorGUILayout.PropertyField(_onSubmitWedgeSoundClip);
+        }
+
+        private void DisplayOther() {
+            EditorGUILayout.LabelField("Other", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(TrackMouse);
+        }
+
         private void DisplayEvents() {
             EditorGUILayout.LabelField("Events", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(OnWedgeHover);
             EditorGUILayout.PropertyField(OnWedgeUnhover);
-            EditorGUILayout.PropertyField(OnWedgeSelected);
+            EditorGUILayout.PropertyField(OnWedgeSubmitted);
         }
     }
 }
