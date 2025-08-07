@@ -1,6 +1,7 @@
 using System;
 using Chonker.Core.Scripts.Physics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Chonker.Core.UI
@@ -28,6 +29,9 @@ namespace Chonker.Core.UI
         [SerializeField, Range(1, 2)] private float _onHoverScale = 1.1f;
         [SerializeField] private Color _onHoverColor = Color.white;
         [SerializeField, Range(.01f, 1)] private float _hoverTransitionTime = 0.2f;
+        public UnityEvent<RadialMenuWedge> OnWedgeHover;
+        public UnityEvent<RadialMenuWedge> OnWedgeUnhover;
+        public UnityEvent<RadialMenuWedge> OnWedgeSelected;
         
         private RadialMenuWedge _currentWedge;
 
@@ -35,11 +39,12 @@ namespace Chonker.Core.UI
             get => _currentWedge;
             set {
                 if (_currentWedge) {
+                    OnWedgeUnhover.Invoke(_currentWedge);
                     _currentWedge.OnUnHover();
                 }
-
                 _currentWedge = value;
                 if (_currentWedge) {
+                    OnWedgeHover.Invoke(_currentWedge);
                     _currentWedge.OnHover();
                 }
             }
@@ -55,6 +60,10 @@ namespace Chonker.Core.UI
 
         private void Update() {
             probeForWedges();
+
+            if (Input.GetMouseButtonDown(0) && CurrentWedge) {
+                OnWedgeSelected.Invoke(CurrentWedge);
+            }
         }
 
         private void probeForWedges() {

@@ -20,7 +20,10 @@ namespace Chonker.Core.Editor.UI.RadialMenu
             _updateWedgeOnHover,
             _onHoverScale,
             _onHoverColor,
-            _hoverTransitionTime;
+            _hoverTransitionTime,
+            OnWedgeUnhover,
+            OnWedgeHover,
+            OnWedgeSelected;
 
         private Core.UI.RadialMenu UnderlyingRadialMenu;
         private bool showComponentReferences = false;
@@ -41,6 +44,10 @@ namespace Chonker.Core.Editor.UI.RadialMenu
             _onHoverScale = serializedObject.FindProperty("_onHoverScale");
             _onHoverColor = serializedObject.FindProperty("_onHoverColor");
             _hoverTransitionTime = serializedObject.FindProperty("_hoverTransitionTime");
+
+            OnWedgeUnhover = serializedObject.FindProperty("OnWedgeUnhover");
+            OnWedgeHover = serializedObject.FindProperty("OnWedgeHover");
+            OnWedgeSelected = serializedObject.FindProperty("OnWedgeSelected");
             UnderlyingRadialMenu = (Core.UI.RadialMenu)target;
         }
 
@@ -56,7 +63,7 @@ namespace Chonker.Core.Editor.UI.RadialMenu
 
             DisplayTransformData();
             DisplayWedgeDisplayData();
-
+            DisplayEvents();
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -97,6 +104,13 @@ namespace Chonker.Core.Editor.UI.RadialMenu
                 serializedObject.ApplyModifiedProperties();
                 UnderlyingRadialMenu.refreshVisualData();
             }
+        }
+
+        private void DisplayEvents() {
+            EditorGUILayout.LabelField("Events", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(OnWedgeHover);
+            EditorGUILayout.PropertyField(OnWedgeUnhover);
+            EditorGUILayout.PropertyField(OnWedgeSelected);
         }
     }
 }
