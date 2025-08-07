@@ -7,13 +7,16 @@ namespace Chonker.Core.Scripts.Physics
         public const string PlayerLayerName = "Local Player";
         public const string LevelGeometryLayerName = "Level Geometry";
         public const string InteractionLayerName = "Interaction";
+        public const string UILayerName = "UI";
         public static readonly int LevelGeometryLayerIndex;
         public static readonly int LocalPlayerLayerIndex;
         public static readonly int InteractionLayerIndex = LayerMask.NameToLayer(InteractionLayerName);
+        public static readonly int UILayerIndex = LayerMask.NameToLayer(UILayerName);
         public static readonly LayerMask AllLayers;
         public static readonly LayerMask LevelGeometryMask;
         public static readonly LayerMask LocalPlayer;
         public static readonly LayerMask InteractionMask;
+        public static readonly LayerMask UIMask;
 
         static PhysicsLayerRegistry() {
             AllLayers = ~0;
@@ -22,6 +25,7 @@ namespace Chonker.Core.Scripts.Physics
             LevelGeometryMask = LayerMask.GetMask(LevelGeometryLayerName);
             LocalPlayer = LayerMask.GetMask(PlayerLayerName);
             InteractionMask = LayerMask.GetMask(InteractionLayerName);
+            UIMask = LayerMask.GetMask(UILayerName);
 
 #if UNITY_EDITOR
             validateLayer(PlayerLayerName);
