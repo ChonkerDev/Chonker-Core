@@ -27,7 +27,7 @@ namespace Chonker.Core.UI
         [SerializeField, Range(0, 1)] private float _iconOffset;
         [SerializeField] private RectTransform rectTransform;
         [SerializeField, Range(0, 180)] private int _wedgeRotationOffset;
-        
+
         [SerializeField] private Color _wedgeColor = Color.gray;
         [SerializeField] private Color _backgroundColor = Color.white;
         [SerializeField] private bool _updateWedgeOnHover = true;
@@ -38,7 +38,7 @@ namespace Chonker.Core.UI
 
         [SerializeField] private AudioClip _onHoverEnterWedgeSoundClip;
         [SerializeField] private AudioClip _onSubmitWedgeSoundClip;
-        
+
         public UnityEvent<RadialMenuWedge> OnWedgeHover;
         public UnityEvent<RadialMenuWedge> OnWedgeUnhover;
         public UnityEvent<RadialMenuWedge> OnWedgeSubmitted;
@@ -46,11 +46,11 @@ namespace Chonker.Core.UI
         private LayerMask UIMask;
         [SerializeField] private Camera uiCamera;
         Collider2D[] wedgeProbeResults = new Collider2D[1];
-        
+
         private CanvasGroup canvasgroup;
         public bool isOn { get; private set; }
         public bool TrackMouse = true;
-        
+
         private RadialMenuWedge _currentWedge;
 
         public RadialMenuWedge CurrentWedge {
@@ -60,6 +60,7 @@ namespace Chonker.Core.UI
                     OnWedgeUnhover.Invoke(_currentWedge);
                     _currentWedge.OnUnHover();
                 }
+
                 _currentWedge = value;
                 if (_currentWedge) {
                     _audioSource.PlayOneShot(_onHoverEnterWedgeSoundClip);
@@ -92,7 +93,6 @@ namespace Chonker.Core.UI
             else {
                 canvasgroup.alpha = 1;
             }
-
         }
 
         public void TurnOff() {
@@ -109,13 +109,11 @@ namespace Chonker.Core.UI
                     SubmitCurrentWedge();
                 }
             }
-
         }
 
         public void SubmitCurrentWedge() {
             _audioSource.PlayOneShot(_onSubmitWedgeSoundClip);
             OnWedgeSubmitted?.Invoke(CurrentWedge);
-
         }
 
         private void probeForWedges() {
@@ -138,6 +136,7 @@ namespace Chonker.Core.UI
                     if (hitCollider.TryGetComponent<RadialMenuWedge>(out var foundWedge)) {
                         CurrentWedge = foundWedge;
                     }
+
                     return;
                 }
 
@@ -145,6 +144,7 @@ namespace Chonker.Core.UI
                     if (hitCollider.TryGetComponent<RadialMenuWedge>(out var foundWedge)) {
                         CurrentWedge = foundWedge;
                     }
+
                     return;
                 }
             }
@@ -179,7 +179,8 @@ namespace Chonker.Core.UI
         public void refreshVisualData() {
             _backgroundImage.color = _backgroundColor;
             foreach (var radialMenuWedge in wedges) {
-                radialMenuWedge.setWedgeVisualData(_updateWedgeOnHover, _wedgeColor, _onHoverScale, _onHoverColor, _hoverTransitionTime);
+                radialMenuWedge.setWedgeVisualData(_updateWedgeOnHover, _wedgeColor, _onHoverScale, _onHoverColor,
+                    _hoverTransitionTime);
             }
         }
 
@@ -188,6 +189,11 @@ namespace Chonker.Core.UI
         }
 
         public void SetWedgeBasedOnDirection(Vector2 direction) {
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            if (angle < 0) angle += 360f;
+            float wedgeAngleSize = 360f / wedges.Length;
+            int index = Mathf.RoundToInt(angle / wedgeAngleSize) % wedges.Length;
+            CurrentWedge = wedges[index];
         }
 
         private void OnValidate() {

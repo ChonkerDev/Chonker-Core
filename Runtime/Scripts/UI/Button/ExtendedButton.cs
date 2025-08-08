@@ -18,7 +18,6 @@ namespace Chonker.Core
         }
 
         public void SimulateClick() {
-            Debug.Log("Simulated Click");
             var eventSystem = EventSystem.current;
             if (eventSystem == null)
                 return;
@@ -28,12 +27,12 @@ namespace Chonker.Core
                 position = Vector2.zero,
             };
 
-
+            Debug.Log("Simulated Click");
             ExecuteEvents.Execute(_underlyingButton.gameObject, pev, ExecuteEvents.pointerEnterHandler);
 
             ExecuteEvents.Execute(_underlyingButton.gameObject, pev, ExecuteEvents.pointerDownHandler);
             ExecuteEvents.Execute(_underlyingButton.gameObject, pev,
-                ExecuteEvents.pointerClickHandler); // <-- This is crucial
+                ExecuteEvents.pointerClickHandler);
             ExecuteEvents.Execute(_underlyingButton.gameObject, pev, ExecuteEvents.pointerUpHandler);
 
             ExecuteEvents.Execute(_underlyingButton.gameObject, pev, ExecuteEvents.pointerExitHandler);
