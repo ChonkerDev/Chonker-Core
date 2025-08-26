@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Chonker.Runtime.Core.StateMachine
 {
@@ -15,14 +16,14 @@ namespace Chonker.Runtime.Core.StateMachine
 
         private Dictionary<TStateId, TState> states;
 
+        public UnityEvent<TStateId, TStateId> OnStateChange = new();
+
         protected virtual void OnAwake() {
-            
         }
 
         protected virtual void OnStart() {
-            
         }
-        
+
         [Obsolete("Do not override Awake. Use OnAwake() instead.", true)]
         private void Awake() {
             FindAndInitializeStates();
@@ -57,6 +58,8 @@ namespace Chonker.Runtime.Core.StateMachine
             if (debugDraw) {
                 Debug.Log($"Updated to {stateId}");
             }
+
+            OnStateChange.Invoke(_currentState, stateId);
             GetCurrentState().OnExit();
             _currentState = stateId;
             processOnEnter();
@@ -65,6 +68,5 @@ namespace Chonker.Runtime.Core.StateMachine
         private void processOnEnter() {
             GetCurrentState().OnEnter();
         }
-        
     }
 }
