@@ -79,7 +79,7 @@ namespace Chonker.Core.Tween
                 yield return null;
             }
 
-            onUpdate?.Invoke(1);
+            onUpdate?.Invoke(t);
             onComplete?.Invoke();
         }
 
@@ -106,7 +106,7 @@ namespace Chonker.Core.Tween
                 yield return null;
             }
 
-            onUpdate?.Invoke(ease(1f));
+            onUpdate?.Invoke(ease(t));
             onComplete?.Invoke();
         }
 
