@@ -6,20 +6,60 @@ namespace Chonker.Core.Tween
 {
     public static class TweenCoroutines
     {
-        
+        public static IEnumerator RunAnimationCurveTaperRealTime(
+            float duration,
+            AnimationCurve curve,
+            Action<float> onUpdate,
+            bool runInReverse = false,
+            Action onComplete = null
+        ) {
+            return runAnimationCurveTaper(duration, curve, onUpdate, true, runInReverse, onComplete);
+        }
+
         public static IEnumerator RunAnimationCurveTaper(
             float duration,
             AnimationCurve curve,
             Action<float> onUpdate,
             bool runInReverse = false,
             Action onComplete = null
-            
-            )
-        {
+        ) {
+            return runAnimationCurveTaper(duration, curve, onUpdate, false, runInReverse, onComplete);
+        }
+
+        public static IEnumerator RunTaper(
+            float duration,
+            Action<float> onUpdate,
+            Action onComplete = null,
+            EaseType easeType = EaseType.Linear) {
+            return runTaper(duration, onUpdate, false, onComplete, easeType);
+        }
+
+        private static IEnumerator RunTaperRealTime(
+            float duration,
+            Action<float> onUpdate,
+            Action onComplete = null,
+            EaseType easeType = EaseType.Linear) {
+            return runTaper(duration, onUpdate, true, onComplete, easeType);
+        }
+
+        private static IEnumerator runAnimationCurveTaper(
+            float duration,
+            AnimationCurve curve,
+            Action<float> onUpdate,
+            bool realTime,
+            bool runInReverse = false,
+            Action onComplete = null
+        ) {
             float t = runInReverse ? 1 : 0;
-            while (true)
-            {
-                float deltaTime = Time.deltaTime / duration;
+            while (true) {
+                float deltaTime;
+                if (realTime) {
+                    deltaTime = Time.unscaledDeltaTime / duration;
+                }
+                else {
+                    deltaTime = Time.deltaTime / duration;
+                }
+
                 if (runInReverse) {
                     t -= deltaTime;
                     if (t < 0) {
@@ -27,13 +67,13 @@ namespace Chonker.Core.Tween
                     }
                 }
                 else {
-                    t+= deltaTime;
-                    if(t > 1) {
+                    t += deltaTime;
+                    if (t > 1) {
                         break;
                     }
                 }
-                
-                
+
+
                 float progress = curve.Evaluate(t);
                 onUpdate?.Invoke(progress);
                 yield return null;
@@ -42,19 +82,26 @@ namespace Chonker.Core.Tween
             onUpdate?.Invoke(1);
             onComplete?.Invoke();
         }
-        
-        public static IEnumerator RunTaper(
+
+        private static IEnumerator runTaper(
             float duration,
             Action<float> onUpdate,
+            bool realTime,
             Action onComplete = null,
-            EaseType easeType = EaseType.Linear)
-        {
+            EaseType easeType = EaseType.Linear) {
             float t = 0f;
             Func<float, float> ease = GetEase(easeType);
 
-            while (t < 1)
-            {
-                t += Time.deltaTime / duration;
+            while (t < 1) {
+                float deltaTime;
+                if (realTime) {
+                    deltaTime = Time.unscaledDeltaTime / duration;
+                }
+                else {
+                    deltaTime = Time.deltaTime / duration;
+                }
+
+                t += deltaTime;
                 onUpdate?.Invoke(ease(t));
                 yield return null;
             }
@@ -62,9 +109,8 @@ namespace Chonker.Core.Tween
             onUpdate?.Invoke(ease(1f));
             onComplete?.Invoke();
         }
-        
-        private static Func<float, float> GetEase(EaseType easeType) => easeType switch
-        {
+
+        private static Func<float, float> GetEase(EaseType easeType) => easeType switch {
             EaseType.Linear => t => t,
             EaseType.SmoothStep => t => Mathf.SmoothStep(0, 1, t),
             EaseType.EaseInQuad => t => t * t,
@@ -73,6 +119,4 @@ namespace Chonker.Core.Tween
             _ => t => t
         };
     }
-    
-
 }
