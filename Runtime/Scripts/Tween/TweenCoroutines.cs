@@ -34,7 +34,7 @@ namespace Chonker.Core.Tween
             return runTaper(duration, onUpdate, false, onComplete, easeType);
         }
 
-        private static IEnumerator RunTaperRealTime(
+        public static IEnumerator RunTaperRealTime(
             float duration,
             Action<float> onUpdate,
             Action onComplete = null,
