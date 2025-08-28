@@ -1,8 +1,9 @@
-﻿using UnityEditor;
-using UnityEditor.SceneManagement;
+﻿#if UNITY_EDITOR
 using UnityEngine;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 
-namespace Chonker.Core.Editor.Attributes
+namespace Chonker.Core.Attributes
 {
     [CustomPropertyDrawer(typeof(PrefabModeOnlyAttribute))]
     public class PrefabModeOnlyDrawer : PropertyDrawer
@@ -27,3 +28,4 @@ namespace Chonker.Core.Editor.Attributes
         }
     }
 }
+#endif
