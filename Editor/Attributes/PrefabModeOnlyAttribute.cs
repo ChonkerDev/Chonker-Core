@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Chonker.Core.Editor.Attributes
 {
-    public class PrefabModeOnlyAttribute : PropertyDrawer
+    public class PrefabModeOnlyAttribute : PropertyAttribute
     {
         
     }
