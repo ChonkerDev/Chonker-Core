@@ -63,12 +63,14 @@ namespace Chonker.Core.Tween
                 if (runInReverse) {
                     t -= deltaTime;
                     if (t < 0) {
+                        t = 0;
                         break;
                     }
                 }
                 else {
                     t += deltaTime;
                     if (t > 1) {
+                        t = 1;
                         break;
                     }
                 }
@@ -79,7 +81,6 @@ namespace Chonker.Core.Tween
                 yield return null;
             }
 
-            onUpdate?.Invoke(t);
             onComplete?.Invoke();
         }
 
@@ -102,11 +103,13 @@ namespace Chonker.Core.Tween
                 }
 
                 t += deltaTime;
+                if (t > 1) {
+                    t = 1;
+                }
                 onUpdate?.Invoke(ease(t));
                 yield return null;
             }
 
-            onUpdate?.Invoke(ease(t));
             onComplete?.Invoke();
         }
 
