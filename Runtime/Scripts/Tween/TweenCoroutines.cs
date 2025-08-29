@@ -80,7 +80,8 @@ namespace Chonker.Core.Tween
                 onUpdate?.Invoke(progress);
                 yield return null;
             }
-
+            
+            onUpdate?.Invoke(curve.Evaluate(t));
             onComplete?.Invoke();
         }
 
