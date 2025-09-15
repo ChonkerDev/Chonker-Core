@@ -33,7 +33,7 @@ namespace Chonker.Runtime.Core.StateMachine
         [Obsolete("Do not override Start. Use OnStart() instead.", true)]
         private void Start() {
             _currentState = _initialState;
-            processOnEnter();
+            GetCurrentState().OnEnter(_initialState);
             OnStart();
         }
 
@@ -59,14 +59,13 @@ namespace Chonker.Runtime.Core.StateMachine
                 Debug.Log($"Updated to {stateId}");
             }
 
+            TStateId prevState = _currentState;
             OnStateChange.Invoke(_currentState, stateId);
-            GetCurrentState().OnExit();
+            GetCurrentState().OnExit(stateId);
             _currentState = stateId;
-            processOnEnter();
+            GetCurrentState().OnEnter(prevState);
         }
-
-        private void processOnEnter() {
-            GetCurrentState().OnEnter();
-        }
+        
+        
     }
 }

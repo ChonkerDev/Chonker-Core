@@ -11,9 +11,9 @@ namespace Chonker.Runtime.Core.StateMachine
 
         public abstract void Initialize();
 
-        public abstract void OnEnter();
+        public abstract void OnEnter(TStateId prevState);
 
-        public abstract void OnExit();
+        public abstract void OnExit(TStateId newState);
 
         public void InitializeFields()
         {
