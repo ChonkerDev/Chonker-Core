@@ -12,7 +12,7 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     protected CanvasGroup canvasGroup;
     [SerializeField] protected Selectable defaultSelectable;
     [SerializeField] protected Selectable defaultSelectableOnDeactivate;
-    [SerializeField] protected Selectable RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetected;
+    [SerializeField] protected bool RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetected = true;
     private Coroutine coroutine;
     private RectTransform rectTransform;
     [SerializeField] private bool RestoreSelectionToDefaultIfCurrentIsNull;
