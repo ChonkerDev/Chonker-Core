@@ -65,14 +65,14 @@ public abstract class NavigationUIMenu : MonoBehaviour {
         if (currentFocusedMenu != this) return;
         if (EventSystem.current.currentSelectedGameObject == null) {
             EventSystem.current.SetSelectedGameObject(defaultSelectable.gameObject);
-            StartCoroutine(EatMoveInput(ctx));
+            StartCoroutine(EatMoveInput());
         }
     }
 
-    private IEnumerator EatMoveInput(InputAction.CallbackContext ctx) {
-        ctx.action.Disable();
+    private IEnumerator EatMoveInput() {
+        uiInputModule.enabled = false;
         yield return null;
-        ctx.action.Enable();
+        uiInputModule.enabled = true;
     }
 
     protected virtual void OnAwake() {
