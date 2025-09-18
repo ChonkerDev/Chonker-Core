@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.InputSystem.UI;
 
 [RequireComponent(typeof(CanvasGroup))]
 public abstract class NavigationUIMenu : MonoBehaviour {
     protected CanvasGroup canvasGroup;
     [SerializeField] protected Selectable defaultSelectable;
     [SerializeField] protected Selectable defaultSelectableOnDeactivate;
+    [SerializeField] protected Selectable RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetected;
     private Coroutine coroutine;
     private RectTransform rectTransform;
-    [SerializeField] private bool ifSelectionLostSetDefaultSelectableAsCurrent;
+    [SerializeField] private bool RestoreSelectionToDefaultIfCurrentIsNull;
     public UnityAction<GameObject, GameObject> OnCurrentSelectionChanged; 
     public RectTransform RectTransform => rectTransform;
     
     protected GameObject LastSelectedGameObjectForThisMenu;
+    protected InputSystemUIInputModule uiInputModule;
 
 
     private static NavigationUIMenu currentFocusedMenu {
@@ -34,6 +38,34 @@ public abstract class NavigationUIMenu : MonoBehaviour {
         canvasGroup = GetComponent<CanvasGroup>();
         OnAwake();
     }
+    
+    /*
+     * if overriding, make sure to call base.OnEnable
+     */
+    protected void OnEnable() {
+        uiInputModule = EventSystem.current?.GetComponent<InputSystemUIInputModule>();
+        if (!uiInputModule) {
+            Debug.LogError("Unable to find Event System in scene.");
+            return;
+        }
+
+        if (RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetected) {
+            uiInputModule.move.action.performed += RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetectedAction;
+        }
+    }
+
+    protected void OnDisable() {
+        if (RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetected) {
+            uiInputModule.move.action.performed -= RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetectedAction;
+        }
+    }
+
+    private void RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetectedAction(InputAction.CallbackContext obj) {
+        if (currentFocusedMenu != this) return;
+        if (EventSystem.current.currentSelectedGameObject == null) {
+            EventSystem.current.SetSelectedGameObject(defaultSelectable.gameObject);
+        }
+    }
 
     protected virtual void OnAwake() {
     }
@@ -42,8 +74,8 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     private void Update() {
         if (currentFocusedMenu == this) {
             if (LastSelectedGameObjectForThisMenu != EventSystem.current?.currentSelectedGameObject) {
-                if (ifSelectionLostSetDefaultSelectableAsCurrent && !EventSystem.current?.currentSelectedGameObject) {
-                    EventSystem.current.SetSelectedGameObject(defaultSelectable.gameObject);
+                if (RestoreSelectionToDefaultIfCurrentIsNull && !EventSystem.current?.currentSelectedGameObject) {
+                    EventSystem.current?.SetSelectedGameObject(defaultSelectable.gameObject);
                 }
                 OnCurrentSelectionChanged.Invoke(LastSelectedGameObjectForThisMenu, EventSystem.current?.currentSelectedGameObject);
                 LastSelectedGameObjectForThisMenu = EventSystem.current?.currentSelectedGameObject;
