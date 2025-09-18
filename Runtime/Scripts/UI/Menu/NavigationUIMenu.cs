@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -11,7 +12,11 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     [SerializeField] protected Selectable defaultSelectableOnDeactivate;
     private Coroutine coroutine;
     private RectTransform rectTransform;
+    public UnityAction<GameObject, GameObject> OnCurrentSelectionChanged; 
     public RectTransform RectTransform => rectTransform;
+    
+    protected GameObject LastSelectedGameObjectForThisMenu;
+
 
     private static NavigationUIMenu currentFocusedMenu {
         get {
@@ -35,6 +40,10 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     [Obsolete("Use OnUpdate instead", true)]
     private void Update() {
         if (currentFocusedMenu == this) {
+            if (LastSelectedGameObjectForThisMenu != EventSystem.current?.currentSelectedGameObject) {
+                OnCurrentSelectionChanged.Invoke(LastSelectedGameObjectForThisMenu, EventSystem.current?.currentSelectedGameObject);
+                LastSelectedGameObjectForThisMenu = EventSystem.current?.currentSelectedGameObject;
+            }
             processCurrentMenu();
         }
 
