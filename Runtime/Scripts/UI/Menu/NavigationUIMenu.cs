@@ -79,15 +79,4 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     public void SetCanvasGroupAlpha(float alpha) {
         canvasGroup.alpha = alpha;
     }
-
-    private void cleanMenuStack() {
-        List<NavigationUIMenu> newStack = new();
-        foreach (var navigationUIMenu in navigationMenuStack) {
-            if (navigationUIMenu != null) {
-                newStack.Add(navigationUIMenu);
-            }
-        }
-
-        navigationMenuStack = newStack;
-    }
 }
