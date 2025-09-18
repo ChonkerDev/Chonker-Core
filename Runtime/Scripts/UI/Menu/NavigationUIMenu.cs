@@ -63,8 +63,8 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     private void RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetectedAction(InputAction.CallbackContext ctx) {
         if (currentFocusedMenu != this) return;
         if (EventSystem.current.currentSelectedGameObject == null) {
-            EventSystem.current.SetSelectedGameObject(defaultSelectable.gameObject);
             ctx.action.Disable(); // eat the input
+            EventSystem.current.SetSelectedGameObject(defaultSelectable.gameObject);
             ctx.action.Enable(); 
         }
     }
