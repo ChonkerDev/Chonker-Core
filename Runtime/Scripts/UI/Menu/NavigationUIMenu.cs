@@ -12,6 +12,7 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     [SerializeField] protected Selectable defaultSelectableOnDeactivate;
     private Coroutine coroutine;
     private RectTransform rectTransform;
+    [SerializeField] private bool ifSelectionLostSetDefaultSelectableAsCurrent;
     public UnityAction<GameObject, GameObject> OnCurrentSelectionChanged; 
     public RectTransform RectTransform => rectTransform;
     
@@ -41,6 +42,9 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     private void Update() {
         if (currentFocusedMenu == this) {
             if (LastSelectedGameObjectForThisMenu != EventSystem.current?.currentSelectedGameObject) {
+                if (ifSelectionLostSetDefaultSelectableAsCurrent && EventSystem.current?.currentSelectedGameObject) {
+                    EventSystem.current.SetSelectedGameObject(defaultSelectable.gameObject);
+                }
                 OnCurrentSelectionChanged.Invoke(LastSelectedGameObjectForThisMenu, EventSystem.current?.currentSelectedGameObject);
                 LastSelectedGameObjectForThisMenu = EventSystem.current?.currentSelectedGameObject;
             }
