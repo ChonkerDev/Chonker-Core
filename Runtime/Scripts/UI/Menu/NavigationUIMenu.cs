@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -63,10 +64,15 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     private void RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetectedAction(InputAction.CallbackContext ctx) {
         if (currentFocusedMenu != this) return;
         if (EventSystem.current.currentSelectedGameObject == null) {
-            ctx.action.Disable(); // eat the input
             EventSystem.current.SetSelectedGameObject(defaultSelectable.gameObject);
-            ctx.action.Enable(); 
+            StartCoroutine(EatMoveInput(ctx));
         }
+    }
+
+    private IEnumerator EatMoveInput(InputAction.CallbackContext ctx) {
+        ctx.action.Disable();
+        yield return null;
+        ctx.action.Enable();
     }
 
     protected virtual void OnAwake() {
