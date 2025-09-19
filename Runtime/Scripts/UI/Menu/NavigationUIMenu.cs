@@ -69,10 +69,9 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     }
 
     private IEnumerator EatMoveInput(InputAction.CallbackContext ctx) {
-        ctx.action.Disable();
+        ctx.action.Reset();
         yield return null;
         EventSystem.current.SetSelectedGameObject(defaultSelectable.gameObject);
-        ctx.action.Enable();
 
     }
 
