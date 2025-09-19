@@ -6,6 +6,7 @@ namespace Chonker2D.Sprite {
         [SerializeField, Tooltip("Most likely the Main Camera")]
         private Transform TargetMovementReference;
 
+        [SerializeField] private bool _syncY;
 
         [SerializeField] private float parallaxAmountX = 0;
         [SerializeField] private float parallaxAmountY = 0;
@@ -28,6 +29,9 @@ namespace Chonker2D.Sprite {
             float parallaxAmountFinalY = distanceToStartY * parallaxAmountY;
             targetPosition.x = startXPos + parallaxAmountFinalX;
             targetPosition.y = startYPos  + parallaxAmountFinalY;
+            if (_syncY) {
+                targetPosition.y = TargetMovementReference.position.y;
+            }
             transform.position = targetPosition;
         }
     }
