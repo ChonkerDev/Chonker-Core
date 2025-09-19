@@ -64,15 +64,13 @@ public abstract class NavigationUIMenu : MonoBehaviour {
     private void RestoreCurrentToDefaultIfCurrentIsNullAndMoveIsDetectedAction(InputAction.CallbackContext ctx) {
         if (currentFocusedMenu != this) return;
         if (EventSystem.current.currentSelectedGameObject == null) {
-            StartCoroutine(EatMoveInput(ctx));
+            StartCoroutine(DelayCurrentSelectionUpdate()); // override the input this frame, by setting next frame
         }
     }
-
-    private IEnumerator EatMoveInput(InputAction.CallbackContext ctx) {
-        ctx.action.Reset();
+    
+    private IEnumerator DelayCurrentSelectionUpdate() {
         yield return null;
         EventSystem.current.SetSelectedGameObject(defaultSelectable.gameObject);
-
     }
 
     protected virtual void OnAwake() {
