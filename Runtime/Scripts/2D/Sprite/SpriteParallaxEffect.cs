@@ -7,8 +7,8 @@ namespace Chonker2D.Sprite {
         private Transform TargetMovementReference;
 
 
-        [SerializeField, Range(0, 1)] private float parallaxAmountX = .5f;
-        [SerializeField, Range(0, 1)] private float parallaxAmountY = .5f;
+        [SerializeField] private float parallaxAmountX = 0;
+        [SerializeField] private float parallaxAmountY = 0;
         private Vector2 targetPosition;
         private float startXPos;
         private float startYPos;
