@@ -83,7 +83,7 @@ public abstract class NavigationUIMenu : MonoBehaviour {
                 if (RestoreSelectionToDefaultIfCurrentIsNull && !EventSystem.current?.currentSelectedGameObject) {
                     EventSystem.current?.SetSelectedGameObject(defaultSelectable.gameObject);
                 }
-                OnCurrentSelectionChanged.Invoke(LastSelectedGameObjectForThisMenu, EventSystem.current?.currentSelectedGameObject);
+                OnCurrentSelectionChanged?.Invoke(LastSelectedGameObjectForThisMenu, EventSystem.current?.currentSelectedGameObject);
                 LastSelectedGameObjectForThisMenu = EventSystem.current?.currentSelectedGameObject;
             }
             processCurrentMenu();
