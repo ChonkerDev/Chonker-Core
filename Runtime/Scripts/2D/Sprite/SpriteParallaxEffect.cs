@@ -12,6 +12,7 @@ namespace Chonker2D.Sprite {
         private Vector3 targetPosition;
         private float startXPos;
         private float startYPos;
+        [SerializeField] private bool UseFixedUpdate;
 
         private void Awake() {
         }
@@ -21,7 +22,19 @@ namespace Chonker2D.Sprite {
             startYPos = transform.position.y;
         }
 
+        private void FixedUpdate() {
+            if (UseFixedUpdate) {
+                CalculatePosition();
+            }
+        }
+
         private void LateUpdate() {
+            if (!UseFixedUpdate) {
+                CalculatePosition();
+            }
+        }
+
+        private void CalculatePosition() {
             float distanceToStartX = TargetMovementReference.transform.position.x - startXPos;
             float distanceToStartY = TargetMovementReference.transform.position.y - startYPos;
 
@@ -39,5 +52,6 @@ namespace Chonker2D.Sprite {
 
             transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * smoothingSpeed);
         }
+        
     }
 }
