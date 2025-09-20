@@ -25,8 +25,8 @@ namespace Chonker2D.Sprite {
             float distanceToStartY = TargetMovementReference.transform.position.y - startYPos;
             float parallaxAmountFinalX = distanceToStartX * parallaxAmountX;
             float parallaxAmountFinalY = distanceToStartY * parallaxAmountY;
-            targetPosition.x = startXPos + parallaxAmountFinalX;
-            targetPosition.y = startYPos + parallaxAmountFinalY;
+            targetPosition.x = TargetMovementReference.transform.position.x + parallaxAmountFinalX;
+            targetPosition.y = TargetMovementReference.transform.position.y + parallaxAmountFinalY;
             transform.position = targetPosition;
         }
     }
