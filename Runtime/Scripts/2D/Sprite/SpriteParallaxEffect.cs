@@ -8,6 +8,7 @@ namespace Chonker2D.Sprite {
         
         [SerializeField] private float parallaxAmountX = 1;
         [SerializeField] private float parallaxAmountY = 1;
+        [SerializeField] private float smoothingSpeed = 10;
         private Vector3 targetPosition;
         private float startXPos;
         private float startYPos;
@@ -31,7 +32,12 @@ namespace Chonker2D.Sprite {
             targetPosition.y = startYPos + parallaxAmountFinalY;
             targetPosition.z = transform.position.z;
 
-            transform.position = targetPosition;
+            Vector3 desiredPosition = new Vector3(
+                startXPos + parallaxAmountFinalX,
+                startYPos + parallaxAmountFinalY,
+                transform.position.z);
+
+            transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * smoothingSpeed);
         }
     }
 }
