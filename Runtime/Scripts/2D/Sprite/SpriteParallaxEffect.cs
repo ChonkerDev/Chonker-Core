@@ -8,7 +8,7 @@ namespace Chonker2D.Sprite {
         
         [SerializeField] private float parallaxAmountX = 0;
         [SerializeField] private float parallaxAmountY = 0;
-        private Vector2 targetPosition;
+        private Vector3 targetPosition;
         private float startXPos;
         private float startYPos;
 
@@ -23,10 +23,14 @@ namespace Chonker2D.Sprite {
         private void LateUpdate() {
             float distanceToStartX = TargetMovementReference.transform.position.x - startXPos;
             float distanceToStartY = TargetMovementReference.transform.position.y - startYPos;
+
             float parallaxAmountFinalX = distanceToStartX * parallaxAmountX;
             float parallaxAmountFinalY = distanceToStartY * parallaxAmountY;
-            targetPosition.x = TargetMovementReference.transform.position.x + parallaxAmountFinalX;
-            targetPosition.y = TargetMovementReference.transform.position.y + parallaxAmountFinalY;
+
+            targetPosition.x = startXPos + parallaxAmountFinalX;
+            targetPosition.y = startYPos + parallaxAmountFinalY;
+            targetPosition.z = transform.position.z;
+
             transform.position = targetPosition;
         }
     }
