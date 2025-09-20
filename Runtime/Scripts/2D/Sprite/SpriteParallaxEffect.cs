@@ -5,9 +5,7 @@ namespace Chonker2D.Sprite {
     public class SpriteParallaxEffect : MonoBehaviour {
         [SerializeField, Tooltip("Most likely the Main Camera")]
         private Transform TargetMovementReference;
-
-        [SerializeField] private bool _syncY;
-
+        
         [SerializeField] private float parallaxAmountX = 0;
         [SerializeField] private float parallaxAmountY = 0;
         private Vector2 targetPosition;
@@ -18,20 +16,17 @@ namespace Chonker2D.Sprite {
         }
 
         private void Start() {
-            startXPos = TargetMovementReference.position.x;
+            startXPos = transform.position.x;
             startYPos = transform.position.y;
         }
 
-        private void Update() {
+        private void LateUpdate() {
             float distanceToStartX = TargetMovementReference.transform.position.x - startXPos;
             float distanceToStartY = TargetMovementReference.transform.position.y - startYPos;
             float parallaxAmountFinalX = distanceToStartX * parallaxAmountX;
             float parallaxAmountFinalY = distanceToStartY * parallaxAmountY;
             targetPosition.x = startXPos + parallaxAmountFinalX;
-            targetPosition.y = startYPos  + parallaxAmountFinalY;
-            if (_syncY) {
-                targetPosition.y = TargetMovementReference.position.y;
-            }
+            targetPosition.y = startYPos + parallaxAmountFinalY;
             transform.position = targetPosition;
         }
     }
