@@ -33,7 +33,7 @@ namespace Chonker.Runtime.Core.StateMachine
         [Obsolete("Do not override Start. Use OnStart() instead.", true)]
         private void Start() {
             _currentState = _initialState;
-            GetCurrentState().OnEnter(_initialState);
+            GetCurrentState().OnEnter(_initialState, true);
             OnStart();
         }
 

@@ -11,7 +11,7 @@ namespace Chonker.Runtime.Core.StateMachine
 
         public abstract void Initialize();
 
-        public abstract void OnEnter(TStateId prevState);
+        public abstract void OnEnter(TStateId prevState, bool calledFromStart = false);
 
         public abstract void OnExit(TStateId newState);
 
