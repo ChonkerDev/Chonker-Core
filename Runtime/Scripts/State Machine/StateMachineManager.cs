@@ -22,9 +22,12 @@ namespace Chonker.Runtime.Core.StateMachine {
         protected virtual void OnStart() {
         }
 
+        protected abstract string InitialState();
+
         [Obsolete("Do not override Awake. Use OnAwake() instead.", true)]
         private void Awake() {
             FindAndInitializeStates();
+            _initialState = InitialState();
             OnAwake();
         }
 
