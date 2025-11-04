@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Chonker.Runtime.Core.StateMachine
-{
-    public abstract class StateMachineManager<TStateId, TState> : MonoBehaviour
-        where TStateId : Enum
-        where TState : StateMachine<TStateId>
-    {
-        [SerializeField] private TStateId _initialState;
-        [SerializeField] private TStateId _currentState;
+namespace Chonker.Runtime.Core.StateMachine {
+    public abstract class StateMachineManager<TState> : MonoBehaviour
+        where TState : StateMachine {
+        
+        [SerializeField] private string _initialState;
+        [SerializeField] private string _currentState;
         [SerializeField] private bool debugDraw;
-        public TStateId CurrentState => _currentState;
+        public string CurrentState => _currentState;
 
-        private Dictionary<TStateId, TState> states;
+        private Dictionary<string, TState> states;
 
-        public UnityEvent<TStateId, TStateId> OnStateChange = new();
+        public UnityEvent<string, string> OnStateChange = new();
 
         protected virtual void OnAwake() {
         }
@@ -50,22 +48,20 @@ namespace Chonker.Runtime.Core.StateMachine
             return states[CurrentState];
         }
 
-        public TState GetState(TStateId stateId) {
+        public TState GetState(string stateId) {
             return states[stateId];
         }
 
-        protected void UpdateState(TStateId stateId) {
+        protected void UpdateState(string stateId) {
             if (debugDraw) {
                 Debug.Log($"Updated to {stateId}");
             }
 
-            TStateId prevState = _currentState;
+            string prevState = _currentState;
             OnStateChange.Invoke(_currentState, stateId);
             GetCurrentState().OnExit(stateId);
             _currentState = stateId;
             GetCurrentState().OnEnter(prevState);
         }
-        
-        
     }
 }
