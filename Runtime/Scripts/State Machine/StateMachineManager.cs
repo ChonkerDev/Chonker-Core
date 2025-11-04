@@ -26,12 +26,12 @@ namespace Chonker.Runtime.Core.StateMachine {
         [Obsolete("Do not override Awake. Use OnAwake() instead.", true)]
         private void Awake() {
             FindAndInitializeStates();
+            _currentState = InitialState();
             OnAwake();
         }
 
         [Obsolete("Do not override Start. Use OnStart() instead.", true)]
         private void Start() {
-            _currentState = InitialState();
             GetCurrentState().OnEnter(_currentState, true);
             OnStart();
         }
