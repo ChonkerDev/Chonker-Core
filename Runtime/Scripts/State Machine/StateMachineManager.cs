@@ -7,7 +7,6 @@ namespace Chonker.Runtime.Core.StateMachine {
     public abstract class StateMachineManager<TState> : MonoBehaviour
         where TState : StateMachine {
         
-        [SerializeField] private string _initialState;
         [SerializeField] private string _currentState;
         [SerializeField] private bool debugDraw;
         public string CurrentState => _currentState;
@@ -27,14 +26,13 @@ namespace Chonker.Runtime.Core.StateMachine {
         [Obsolete("Do not override Awake. Use OnAwake() instead.", true)]
         private void Awake() {
             FindAndInitializeStates();
-            _initialState = InitialState();
             OnAwake();
         }
 
         [Obsolete("Do not override Start. Use OnStart() instead.", true)]
         private void Start() {
-            _currentState = _initialState;
-            GetCurrentState().OnEnter(_initialState, true);
+            _currentState = InitialState();
+            GetCurrentState().OnEnter(_currentState, true);
             OnStart();
         }
 
